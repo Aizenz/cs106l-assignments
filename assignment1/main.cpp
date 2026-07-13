@@ -25,9 +25,9 @@ const std::string COURSES_NOT_OFFERED_PATH = "student_output/courses_not_offered
  * Hint: Remember what types C++ streams work with?!
  */
 struct Course {
-  /* STUDENT TODO */ title;
-  /* STUDENT TODO */ number_of_units;
-  /* STUDENT TODO */ quarter;
+  /* STUDENT TODO */ std::string title;
+  /* STUDENT TODO */ int number_of_units;
+  /* STUDENT TODO */ std::string quarter;
 };
 
 /**
@@ -58,8 +58,23 @@ struct Course {
  * @param filename The name of the file to parse.
  * @param courses  A vector of courses to populate.
  */
-void parse_csv(std::string filename, std::vector<Course> courses) {
+void parse_csv(std::string filename, std::vector<Course>& courses) {
   /* (STUDENT TODO) Your code goes here... */
+  std::ifstream file(filename);
+  std::string line;
+  // skip the first line
+  std::getline(file, line);
+  while (std::getline(file, line)) {
+    std::vector<std::string> fields = split(line, ',');
+    // initialized with {} copy
+    Course course{
+      fields[0],
+      std::stoi(fields[1]),
+      fields[2]
+    };
+    // add to vector
+    courses.push_back(course);
+  }
 }
 
 /**
@@ -82,6 +97,7 @@ void parse_csv(std::string filename, std::vector<Course> courses) {
  */
 void write_courses_offered(std::vector<Course> all_courses) {
   /* (STUDENT TODO) Your code goes here... */
+
 }
 
 /**
@@ -99,6 +115,7 @@ void write_courses_offered(std::vector<Course> all_courses) {
  */
 void write_courses_not_offered(std::vector<Course> unlisted_courses) {
   /* (STUDENT TODO) Your code goes here... */
+  std::ofstream 
 }
 
 int main() {
