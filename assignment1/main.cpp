@@ -26,7 +26,7 @@ const std::string COURSES_NOT_OFFERED_PATH = "student_output/courses_not_offered
  */
 struct Course {
   /* STUDENT TODO */ std::string title;
-  /* STUDENT TODO */ int number_of_units;
+  /* STUDENT TODO */ std::string number_of_units;
   /* STUDENT TODO */ std::string quarter;
 };
 
@@ -59,6 +59,7 @@ struct Course {
  * @param courses  A vector of courses to populate.
  */
 void parse_csv(std::string filename, std::vector<Course>& courses) {
+void parse_csv(std::string filename, std::vector<Course>& courses) {
   /* (STUDENT TODO) Your code goes here... */
   std::ifstream file(filename);
   std::string line;
@@ -69,7 +70,7 @@ void parse_csv(std::string filename, std::vector<Course>& courses) {
     // initialized with {} copy
     Course course{
       fields[0],
-      std::stoi(fields[1]),
+      fields[1],
       fields[2]
     };
     // add to vector
@@ -95,9 +96,27 @@ void parse_csv(std::string filename, std::vector<Course>& courses) {
  * @param all_courses A vector of all courses gotten by calling `parse_csv`.
  *                    This vector will be modified by removing all offered courses.
  */
-void write_courses_offered(std::vector<Course> all_courses) {
+void write_courses_offered(std::vector<Course>& all_courses) {
   /* (STUDENT TODO) Your code goes here... */
-
+  std::ofstream output(COURSES_OFFERED_PATH);
+  if(!output) {
+    std::cerr << "failed to access the file\n";
+  }
+  std::vector<Course> offered_courses;
+  // append the first line
+  output << "Title,Number of Units,Quarter\n";
+  // append the rest line
+  for (const auto& i:all_courses) {
+    if (i.quarter != "null") {
+      output << i.title << ","
+            << i.number_of_units << ","
+            << i.quarter << "\n";
+      offered_courses.push_back(i);
+    }
+  }
+  for (const auto& i:offered_courses){
+    delete_elem_from_vector(all_courses,i);
+  }
 }
 
 /**
@@ -115,7 +134,17 @@ void write_courses_offered(std::vector<Course> all_courses) {
  */
 void write_courses_not_offered(std::vector<Course> unlisted_courses) {
   /* (STUDENT TODO) Your code goes here... */
-  std::ofstream 
+  std::ofstream output(COURSES_NOT_OFFERED_PATH);
+  if (!output) {
+    std::cerr << "failed to access the file\n";
+  }
+  // append the first line
+  output << "Title,Number of Units,Quarter\n";
+  for (auto i:unlisted_courses) {
+    output << i.title << "," 
+          << i.number_of_units << "," 
+          << i.quarter << "\n";
+  }
 }
 
 int main() {
