@@ -14,7 +14,7 @@
 #include <string>
 #include <unordered_set>
 
-std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
+std::string kYourName = "Aizenz Liu"; // Don't forget to change this!
 
 /**
  * Takes in a file name and returns a set containing all of the applicant names as a set.
@@ -28,7 +28,13 @@ std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
  * to also change the corresponding functions in `utils.h`.
  */
 std::set<std::string> get_applicants(std::string filename) {
-  // STUDENT TODO: Implement this function.
+    std::ofstream input(filename);
+    std::set<std::string> applicants;
+    std::string name;
+    while(std::getline(input, name)) {
+        applicants.insert(name);
+    }
+    return applicants;
 }
 
 /**
@@ -40,7 +46,9 @@ std::set<std::string> get_applicants(std::string filename) {
  * @return          A queue containing pointers to each matching name.
  */
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
-  // STUDENT TODO: Implement this function.
+    std::string initials(std::string) {
+        
+    }
 }
 
 /**
