@@ -8,6 +8,7 @@
  */
 
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include <queue>
 #include <set>
@@ -28,7 +29,7 @@ std::string kYourName = "Aizenz Liu"; // Don't forget to change this!
  * to also change the corresponding functions in `utils.h`.
  */
 std::set<std::string> get_applicants(std::string filename) {
-    std::ofstream input(filename);
+    std::ifstream input(filename);
     std::set<std::string> applicants;
     std::string name;
     while(std::getline(input, name)) {
@@ -46,9 +47,21 @@ std::set<std::string> get_applicants(std::string filename) {
  * @return          A queue containing pointers to each matching name.
  */
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
-    std::string initials(std::string) {
-        
+    auto get_initials = [](std::string full_name) {
+        std::string initials;
+        std::string word;
+        std::istringstream ss(full_name);
+        while(ss >> word) initials+=word[0];
+        return initials;
+    };
+
+    // get the init
+    std::string name_init = get_initials(name);
+    std::queue<const std::string*> matched;
+    for (const auto& i:students) {
+        if (get_initials(i) == name_init) matched.push(&i);
     }
+    return matched;
 }
 
 /**
@@ -63,6 +76,12 @@ std::queue<const std::string*> find_matches(std::string name, std::set<std::stri
  */
 std::string get_match(std::queue<const std::string*>& matches) {
   // STUDENT TODO: Implement this function.
+    if (matches.size() == 0) return "NO MATCHES FOUND.";
+    else {
+        std::string ans = *matches.front();
+        matches.pop();
+        return ans;
+    }
 }
 
 /* #### Please don't remove this line! #### */
